@@ -1,6 +1,6 @@
-#include <stdio.h>  // подключаем стандартную библиотеку ввода-вывода
-#include <signal.h>  // подключаем библиотеку для работы с сигналами
-#include <unistd.h>  // подключаем библиотеку для работы с POSIX API
+#include <stdio.h>  
+#include <signal.h>
+#include <unistd.h>
 
 char* string_to_output = "Hello, world!";  // строка для вывода на экран
 
@@ -29,5 +29,5 @@ int main()
         sleep(1);  // ждем 1 секунду
     }
     
-    return 0;  // возвращаем 0 - успех
+    return 0;
 }
