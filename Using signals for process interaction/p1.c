@@ -2,7 +2,7 @@
 #include <signal.h>
 #include <unistd.h>
 
-char* string_to_output = "Hello, world!";  // строка для вывода на экран
+char* string_to_output = "waiting signals";  // строка для вывода на экран
 
 // функция-обработчик сигналов
 void signal_handler(int signal)
