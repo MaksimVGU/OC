@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <sys/types.h>
 
 int main() {
     pid_t pid;          // Тип pid_t для хранения идентификатора процесса
