@@ -26,7 +26,7 @@ int main()
     while (1)  // бесконечный цикл
     {
         printf("%s\n", string_to_output);  // выводим строку на экран
-        sleep(1);  // ждем 1 секунду
+        sleep(15);  // ждем 10 секунд
     }
     
     return 0;
