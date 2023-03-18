@@ -1,6 +1,6 @@
 #include <stdio.h> 
 #include <unistd.h> 
-
+#include <sys/types.h>
 int main() {
     pid_t pid; // переменная для хранения идентификатора процесса
 
