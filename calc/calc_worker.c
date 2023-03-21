@@ -12,7 +12,8 @@ struct msgbuf {
     char mtext[100];
 };
 
-int main() {
+int main() 
+{
     int msgid;
     struct msgbuf msg;
     double result;
