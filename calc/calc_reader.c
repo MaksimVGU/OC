@@ -33,13 +33,20 @@ int main() {
     while (1) {
         CalcTask task;
 
-        printf("Enter an operation (+, -, *, /, ^) and two operands: ");
-        scanf("%c %lf %lf", &task.operation, &task.operand1, &task.operand2);
-        int c;
-        while ((c = getchar()) != '\n' && c != EOF); // очистка входного потока
+CalcTask task;
 
-        task.type = 1;
+printf("Enter an operation (+, -, *, /, ^) and two operands: ");
+scanf("%c %lf %lf", &task.operation, &task.operand1, &task.operand2);
 
+char msg[MAX_MSG_SIZE];
+sprintf(msg, "%lf %c %lf", task.operand1, task.operation, task.operand2);
+
+task.type = 1;
+
+if (msgsnd(msgid, msg, strlen(msg) + 1, 0) == -1) {
+    perror("msgsnd");
+    exit(1);
+}
         if (msgsnd(msgid, &task, sizeof(task) - sizeof(long), 0) == -1) {
             perror("msgsnd");
             exit(1);
