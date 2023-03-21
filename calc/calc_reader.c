@@ -7,7 +7,7 @@
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
-
+#define MSG_KEY 12345
 #define MAX_MSG_SIZE 512
 
 typedef struct {
@@ -24,7 +24,7 @@ int main() {
         exit(1);
     }
 
-    int msgid = msgget(key, IPC_CREAT | 0666);
+    int msgid = msgget(MSG_KEY, 0666 | IPC_CREAT);
     if (msgid == -1) {
         perror("msgget");
         exit(1);
@@ -34,7 +34,8 @@ int main() {
         CalcTask task;
 
         printf("Enter an operation (+, -, *, /, ^) and two operands: ");
-        scanf(" %c %lf %lf", &task.operation, &task.operand1, &task.operand2);
+        scanf("%c %lf %lf", &task.operation, &task.operand1, &task.operand2);
+        printf("%lf + %lf", &task.operand1, &task.operand2);
 
         task.type = 1;
 
