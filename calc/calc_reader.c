@@ -29,7 +29,7 @@ int main()
     int msgid = msgget(MSG_KEY, 0666 | IPC_CREAT);
     if (msgid == -1) 
     {
-        perror("msgget");
+        perror("msgget\n");
         exit(1);
     }
 
@@ -37,7 +37,7 @@ int main()
     {
         CalcTask task;
 
-        printf("Enter an operation (+, -, *, /, ^) and two operands: ");
+        printf("Enter an operation (+, -, *, /, ^) and two operands: \n");
         scanf("%c %lf %lf", &task.operation, &task.operand1, &task.operand2);
 
         char msg[MAX_MSG_SIZE];
@@ -47,12 +47,12 @@ int main()
 
         if (msgsnd(msgid, msg, strlen(msg) + 1, 0) == -1) 
         {
-            perror("msgsnd");
+            perror("msgsnd\n");
             exit(1);
         }
         if (msgsnd(msgid, &task, sizeof(task) - sizeof(long), 0) == -1) 
         {
-            perror("msgsnd");
+            perror("msgsnd\n");
             exit(1);
         }
     }
