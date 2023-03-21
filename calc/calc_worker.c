@@ -32,7 +32,7 @@ int main()
         exit(1);
     }
 
-    printf("Calc Worker started, waiting for tasks... \n");
+    printf("Calc Worker started, waiting for tasks...\n");
 
     while (1) {
         // Получаем сообщение с типом 1 из очереди сообщений
@@ -80,7 +80,7 @@ int main()
             exit(1);
         }
 
-        printf("Task completed: %lf %c %lf = %lf \n", a, op, b, result.result);
+        printf("\nTask completed: %lf %c %lf = %lf\n", a, op, b, result.result);
     }
 
     return 0;
