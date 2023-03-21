@@ -7,18 +7,23 @@
 
 #define MSG_KEY 12345
 
-struct msgbuf {
-    long mtype;
-    char mtext[100];
-};
+typedef struct {
+    long type;
+    char operation;
+    double operand1;
+    double operand2;
+} CalcTask;
+
+typedef struct {
+    long type;
+    double result;
+} CalcResult;
 
 int main() 
 {
     int msgid;
-    struct msgbuf msg;
-    double result;
-    char op;
-    double a, b;
+    CalcTask task;
+    CalcResult result;
 
     // Получаем идентификатор очереди сообщений
     msgid = msgget(MSG_KEY, 0666 | IPC_CREAT);
@@ -30,55 +35,53 @@ int main()
     printf("Calc Worker started, waiting for tasks...\n");
 
     while (1) {
-        // Получаем сообщение из очереди сообщений
-        if (msgrcv(msgid, &msg, sizeof(msg.mtext), 1, 0) == -1) {
+        // Получаем сообщение с типом 1 из очереди сообщений
+        if (msgrcv(msgid, &task, sizeof(task) - sizeof(long), 1, 0) == -1) {
             perror("msgrcv");
             exit(1);
         }
 
         // Извлекаем аргументы и операцию из сообщения
-        sscanf(msg.mtext, "%lf %c %lf", &a, &op, &b); 
-        printf("%lf + %lf", a, b);
+        double a = task.operand1;
+        double b = task.operand2;
+        char op = task.operation;
+
         // Вычисляем результат
         switch (op) {
             case '+':
-                
-                result = a + b;
+                result.result = a + b;
                 break;
             case '-':
-                result = a - b;
+                result.result = a - b;
                 break;
             case '*':
-                result = a * b;
+                result.result = a * b;
                 break;
             case '/':
                 if (b == 0) {
-                    result = INFINITY;
+                    result.result = INFINITY;
                 } else {
-                    result = a / b;
+                    result.result = a / b;
                 }
                 break;
             case '^':
-                result = pow(a, b);
+                result.result = pow(a, b);
                 break;
             default:
-                result = NAN;
+                result.result = NAN;
                 break;
         }
 
-        // Создаем новое сообщение с результатом вычислений
-        sprintf(msg.mtext, "%lf", result);
-        msg.mtype = 2;
+        result.type = 2;
 
-        // Отправляем сообщение обратно в очередь сообщений
-        if (msgsnd(msgid, &msg, sizeof(msg.mtext), 0) == -1) {
+        // Отправляем сообщение с типом 2 обратно в очередь сообщений
+        if (msgsnd(msgid, &result, sizeof(result) - sizeof(long), 0) == -1) {
             perror("msgsnd");
             exit(1);
         }
 
-        printf("Task completed: %lf %c %lf = %lf\n", a, op, b, result);
+        printf("Task completed: %lf %c %lf = %lf\n", a, op, b, result.result);
     }
 
     return 0;
 }
- 
