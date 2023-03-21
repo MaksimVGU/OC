@@ -1,0 +1,4 @@
+gcc reader.c -o reader
+/usr/bin/ld: /tmp/cc3H2Yrs.o: in function `calculate':
+reader.c:(.text+0x170): undefined reference to `pow'
+collect2: error: ld returned 1 exit status
