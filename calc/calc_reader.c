@@ -38,7 +38,7 @@ int main()
         CalcTask task;
 
         printf("Enter an operation (+, -, *, /, ^) and two operands:");
-        scanf("%c %lf %lf", &task.operation, &task.operand1, &task.operand2);
+        scanf(" %c %lf %lf", &task.operation, &task.operand1, &task.operand2);
 
         char msg[MAX_MSG_SIZE];
         sprintf(msg, "%lf %c %lf", task.operand1, task.operation, task.operand2);
