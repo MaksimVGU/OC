@@ -17,37 +17,41 @@ typedef struct {
     double operand2;
 } CalcTask;
 
-int main() {
+int main() 
+{
     key_t key = ftok("/tmp", 'C');
-    if (key == -1) {
+    if (key == -1) 
+    {
         perror("ftok");
         exit(1);
     }
 
     int msgid = msgget(MSG_KEY, 0666 | IPC_CREAT);
-    if (msgid == -1) {
+    if (msgid == -1) 
+    {
         perror("msgget");
         exit(1);
     }
 
-    while (1) {
+    while (1) 
+    {
         CalcTask task;
 
-CalcTask task;
+        printf("Enter an operation (+, -, *, /, ^) and two operands: ");
+        scanf("%c %lf %lf", &task.operation, &task.operand1, &task.operand2);
 
-printf("Enter an operation (+, -, *, /, ^) and two operands: ");
-scanf("%c %lf %lf", &task.operation, &task.operand1, &task.operand2);
+        char msg[MAX_MSG_SIZE];
+        sprintf(msg, "%lf %c %lf", task.operand1, task.operation, task.operand2);
 
-char msg[MAX_MSG_SIZE];
-sprintf(msg, "%lf %c %lf", task.operand1, task.operation, task.operand2);
+        task.type = 1;
 
-task.type = 1;
-
-if (msgsnd(msgid, msg, strlen(msg) + 1, 0) == -1) {
-    perror("msgsnd");
-    exit(1);
-}
-        if (msgsnd(msgid, &task, sizeof(task) - sizeof(long), 0) == -1) {
+        if (msgsnd(msgid, msg, strlen(msg) + 1, 0) == -1) 
+        {
+            perror("msgsnd");
+            exit(1);
+        }
+        if (msgsnd(msgid, &task, sizeof(task) - sizeof(long), 0) == -1) 
+        {
             perror("msgsnd");
             exit(1);
         }
