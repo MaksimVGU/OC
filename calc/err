@@ -1,3 +1,0 @@
-/usr/bin/ld: /tmp/cc2hgMfo.o: in function `main':
-calc_worker.c:(.text+0x1b2): undefined reference to `pow'
-collect2: error: ld returned 1 exit status
