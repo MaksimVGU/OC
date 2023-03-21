@@ -9,7 +9,8 @@
 #define QUEUE_NAME "/my_queue" // определение имени очереди
 #define MAX_MSG_SIZE 256 // максимальный размер сообщения в очереди
 
-int main() {
+int main() 
+{
     char message[MAX_MSG_SIZE]; // буфер для сообщения
     mqd_t mq; // дескриптор очереди сообщений
 

@@ -12,7 +12,8 @@ typedef struct {
     char text[MAX_TEXT_SIZE];   // текст сообщения
 } message;
 
-int main() {
+int main() 
+{
     // создаем очередь сообщений
     key_t key = ftok("calculator", 65);    // генерируем ключ для очереди
     int msgid = msgget(key, 0666 | IPC_CREAT);   // создаем очередь сообщений с заданным ключом
