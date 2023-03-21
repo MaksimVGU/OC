@@ -35,7 +35,7 @@ int main() {
 
         printf("Enter an operation (+, -, *, /, ^) and two operands: ");
         scanf("%c %lf %lf", &task.operation, &task.operand1, &task.operand2);
-        printf("%lf + %lf", &task.operand1, &task.operand2);
+        printf("%lf + %lf", task.operand1, task.operand2);
 
         task.type = 1;
 

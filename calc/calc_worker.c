@@ -37,8 +37,8 @@ int main()
         }
 
         // Извлекаем аргументы и операцию из сообщения
-        sscanf(msg.mtext, "%lf %c %lf", &a, &op, &b); 
-        printf("%lf + %lf", &a, &b);
+        sscanf(msg.mtext, "%lf %c %lf", a, op, b); 
+        printf("%lf + %lf", a, b);
         // Вычисляем результат
         switch (op) {
             case '+':
