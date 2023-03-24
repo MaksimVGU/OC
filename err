@@ -1,5 +1,0 @@
-gcc th.c -o th -lrt -lm
-/usr/bin/ld: /tmp/ccWvx3DI.o: in function `main':
-th.c:(.text+0x11c): undefined reference to `pthread_create'
-/usr/bin/ld: th.c:(.text+0x155): undefined reference to `pthread_join'
-collect2: error: ld returned 1 exit status
