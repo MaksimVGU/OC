@@ -5,49 +5,52 @@
 #include <sys/msg.h>
 #include <math.h>
 
-#define MSG_KEY 12345
+#define MSG_KEY 12345 // задаем ключ для обмена сообщениями
 
+// определяем структуру для задачи калькулятора
 typedef struct {
-    long type;
-    char operation;
-    double operand1;
-    double operand2;
+    long type; // тип сообщения
+    char operation; // операция
+    double operand1; // первый операнд
+    double operand2; // второй операнд
 } CalcTask;
 
+// определяем структуру для результата калькулятора
 typedef struct {
-    long type;
-    double result;
+    long type; // тип сообщения
+    double result; // результат
 } CalcResult;
 
-int main() 
+int main()
 {
-    int msgid;
-    CalcTask task;
-    CalcResult result;
+    int msgid; // идентификатор очереди сообщений
+    CalcTask task; // задача калькулятора
+    CalcResult result; // результат калькулятора
 
     // Получаем идентификатор очереди сообщений
-    msgid = msgget(MSG_KEY, 0666 | IPC_CREAT);
-    if (msgid == -1) {
-        perror("msgget");
-        exit(1);
+    msgid = msgget(MSG_KEY, 0666 | IPC_CREAT); // создаем очередь сообщений или получаем ее идентификатор, если она уже была создана
+    if (msgid == -1) { // проверяем успешность создания очереди сообщений
+        perror("msgget"); // выводим сообщение об ошибке
+        exit(1); // завершаем программу с ошибкой
     }
 
     printf("Calc Worker started, waiting for tasks...\n");
 
-    while (1) {
+    while (1) 
+    {
         // Получаем сообщение с типом 1 из очереди сообщений
-        if (msgrcv(msgid, &task, sizeof(task) - sizeof(long), 1, 0) == -1) {
-            perror("msgrcv");
-            exit(1);
+        if (msgrcv(msgid, &task, sizeof(task) - sizeof(long), 1, 0) == -1) { // получаем сообщение из очереди с типом 1
+            perror("msgrcv"); // выводим сообщение об ошибке
+            exit(1); // завершаем программу с ошибкой
         }
 
         // Извлекаем аргументы и операцию из сообщения
-        double a = task.operand1;
-        double b = task.operand2;
-        char op = task.operation;
+        double a = task.operand1; // извлекаем первый операнд
+        double b = task.operand2; // извлекаем второй операнд
+        char op = task.operation; // извлекаем операцию
 
         // Вычисляем результат
-        switch (op) {
+        switch (op) { // выбираем действие в зависимости от операции
             case '+':
                 result.result = a + b;
                 break;
@@ -58,7 +61,7 @@ int main()
                 result.result = a * b;
                 break;
             case '/':
-                if (b == 0) {
+                if (b == 0) { // проверяем деление на ноль
                     result.result = INFINITY;
                 } else {
                     result.result = a / b;
@@ -68,20 +71,23 @@ int main()
                 result.result = pow(a, b);
                 break;
             default:
-                result.result = NAN;
+                result.result = NAN; // результат неопределен
                 break;
         }
-
+        // Устанавливаем тип сообщения в 2, чтобы клиент знал, что это результат выполнения операции
         result.type = 2;
 
-        // Отправляем сообщение с типом 2 обратно в очередь сообщений
+        // Отправляем сообщение обратно в очередь сообщений с типом 2
+        // Функция msgsnd возвращает -1, если произошла ошибка при отправке сообщения
         if (msgsnd(msgid, &result, sizeof(result) - sizeof(long), 0) == -1) {
-            perror("msgsnd");
-            exit(1);
+        perror("msgsnd"); // Выводим сообщение об ошибке
+        exit(1); // Завершаем программу с кодом ошибки
         }
 
+        // Выводим сообщение о завершении задания, включая аргументы и результат
         printf("\nTask completed: %lf %c %lf = %lf\n", a, op, b, result.result);
-    }
 
-    return 0;
+        // Конец бесконечного цикла
+    } 
+    return 0; // Возвращаем код успешного завершения программы
 }
