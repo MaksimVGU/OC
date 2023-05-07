@@ -6,6 +6,6 @@ RUN apt-get update && \
 
 COPY . /app
 WORKDIR /app
-RUN g++ -o game main.cpp
+RUN g++ -o game game.cpp
 
 CMD ["./game"]
